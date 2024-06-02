@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Twitter Trending Topics</title>
+</head>
+<body>
+    <h1>Twitter Trending Topics</h1>
+    <button onclick="fetchTrendingTopics()">Click here to run the script</button>
+    <div id="results"></div>
+
+    <script>
+        function fetchTrendingTopics() {
+            fetch('/run_script')
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    const resultsDiv = document.getElementById('results');
+                    resultsDiv.innerHTML = `
+                        <p>These are the most happening topics as on ${new Date(data.datetime).toLocaleString()}</p>
+                        <ul>
+                            <li>${data.nameoftrend1}</li>
+                            <li>${data.nameoftrend2}</li>
+                            <li>${data.nameoftrend3}</li>
+                            <li>${data.nameoftrend4}</li>
+                            <li>${data.nameoftrend5}</li>
+                        </ul>
+                        <p>The IP address used for this query was ${data.ip_address}</p>
+                        <p>Here’s a JSON extract of this record from the MongoDB:</p>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                        <button onclick="fetchTrendingTopics()">Click here to run the query again</button>
+                    `;
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                    const errorDiv = document.getElementById('error');
+                    errorDiv.innerHTML = `<p>Error fetching data. Please try again later.</p>`;
+                });
+        }
+    </script>
+</body>
+</html>
