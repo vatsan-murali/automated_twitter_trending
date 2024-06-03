@@ -2,9 +2,7 @@ from dotenv import load_dotenv
 import os
 import time
 from selenium import webdriver
-from selenium.webdriver.common.proxy import Proxy, ProxyType
 from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from pymongo import MongoClient
 from datetime import datetime
@@ -19,16 +17,15 @@ db = client.twitter_trends
 collection = db.trends
 
 def fetch_twitter_trends():
-    proxy = Proxy({
-        'proxyType': ProxyType.PAC,
-        'proxyAutoconfigUrl': './us-ca.pac'
-    })
-
+    # Configure Chrome options for headless mode
     chrome_options = Options()
-    chrome_options.add_argument('--proxy-server=%s' % proxy.http_proxy)
+    chrome_options.add_argument("--headless")  # Ensure GUI is off
+    chrome_options.add_argument("--no-sandbox")  # Bypass OS security model
+    chrome_options.add_argument("--disable-dev-shm-usage")  # Overcome limited resource problems
 
     driver = webdriver.Chrome(options=chrome_options)
 
+    # Load Twitter login page
     driver.get("https://twitter.com/i/flow/login")
 
     username = os.getenv('TWITTER_USERNAME')
@@ -41,9 +38,11 @@ def fetch_twitter_trends():
     driver.find_element(By.XPATH, "//input[@type='password']").send_keys(password + Keys.RETURN)
     time.sleep(10)
 
+    # Get the public IP address of the server
     response = requests.get('https://api.ipify.org')
     ip_address = response.text
 
+    # Scrape trending topics
     trending_topics = driver.find_elements(By.XPATH, "//div[@aria-label='Timeline: Trending now']//span")
     top_trends = [trend.text for trend in trending_topics]
     trends = []
@@ -72,3 +71,6 @@ def fetch_twitter_trends():
     driver.quit()
 
     return data
+
+if __name__ == "__main__":
+    fetch_twitter_trends()
