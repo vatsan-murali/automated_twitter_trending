@@ -15,7 +15,7 @@ load_dotenv()
 
 mongo_uri = os.getenv('MONGO_URI')
 client = MongoClient(mongo_uri)
-db = client.twitter_trends
+db = client.twitter_trends  
 collection = db.trends
 
 def fetch_twitter_trends():
@@ -25,10 +25,9 @@ def fetch_twitter_trends():
     })
 
     chrome_options = Options()
-    chrome_options.add_argument("--headless")
+    # chrome_options.add_argument("--headless")
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-dev-shm-usage")
-
     chrome_options.add_argument('--proxy-server=%s' % proxy.http_proxy)
 
     driver = webdriver.Chrome(options=chrome_options)
