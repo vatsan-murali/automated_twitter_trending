@@ -16,4 +16,4 @@ def run_script():
         return jsonify({"error": "Failed to fetch Twitter trends"})
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=os.environ.get('PORT', 5000))
