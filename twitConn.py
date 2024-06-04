@@ -81,7 +81,8 @@ def fetch_twitter_trends():
         collection.insert_one(data)
 
         return data
-
+    except Exception as e:
+        print(f"Exception: {e}")
     finally:
         driver.quit()
 
