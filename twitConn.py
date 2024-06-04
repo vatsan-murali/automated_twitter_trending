@@ -34,21 +34,23 @@ def fetch_twitter_trends():
     chrome_options.add_argument('--proxy-server=%s' % proxy.http_proxy)
 
     driver = webdriver.Chrome(options=chrome_options)
-
+    print("OPENING LOGIN PAGE")
     driver.get("https://twitter.com/i/flow/login")
 
     username = os.getenv('TWITTER_USERNAME')
     password = os.getenv('TWITTER_PASSWORD')
-
+    print("Entering username")
     time.sleep(7)
     driver.find_element(By.XPATH, "//input").send_keys(username + Keys.RETURN)
 
+    print("Entering password")
     time.sleep(7)
     driver.find_element(By.XPATH, "//input[@type='password']").send_keys(password + Keys.RETURN)
     time.sleep(10)
 
     response = requests.get('https://api.ipify.org')
     ip_address = response.text
+    print("Entering Timeline")
 
     trending_topics = driver.find_elements(By.XPATH, "//div[@aria-label='Timeline: Trending now']//span")
     top_trends = [trend.text for trend in trending_topics]
