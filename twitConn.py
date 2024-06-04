@@ -41,15 +41,15 @@ def fetch_twitter_trends():
         username = os.getenv('TWITTER_USERNAME')
         password = os.getenv('TWITTER_PASSWORD')
 
-        WebDriverWait(driver, 20).until(
+        WebDriverWait(driver, 50).until(
             EC.presence_of_element_located((By.XPATH, "//input[@name='text']"))
         ).send_keys(username + Keys.RETURN)
 
-        WebDriverWait(driver, 20).until(
+        WebDriverWait(driver, 50).until(
             EC.presence_of_element_located((By.XPATH, "//input[@name='password']"))
         ).send_keys(password + Keys.RETURN)
 
-        trending_topics = WebDriverWait(driver, 20).until(
+        trending_topics = WebDriverWait(driver, 50).until(
             EC.presence_of_all_elements_located((By.XPATH, "//div[@aria-label='Timeline: Trending now']//span"))
         )
 
