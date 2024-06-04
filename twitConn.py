@@ -40,17 +40,18 @@ def fetch_twitter_trends():
     username = os.getenv('TWITTER_USERNAME')
     password = os.getenv('TWITTER_PASSWORD')
     print("Entering username")
-    time.sleep(7)
+    time.sleep(40)
     driver.find_element(By.XPATH, "//input").send_keys(username + Keys.RETURN)
 
     print("Entering password")
-    time.sleep(7)
+    time.sleep(40)
     driver.find_element(By.XPATH, "//input[@type='password']").send_keys(password + Keys.RETURN)
-    time.sleep(10)
+    time.sleep(40)
 
     response = requests.get('https://api.ipify.org')
     ip_address = response.text
     print("Entering Timeline")
+    time.sleep(40)
 
     trending_topics = driver.find_elements(By.XPATH, "//div[@aria-label='Timeline: Trending now']//span")
     top_trends = [trend.text for trend in trending_topics]
